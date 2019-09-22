@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Install Jenkins · jenkins-lab</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Install Jenkins · jenkins-lab"/><meta property="og:type" content="website"/><meta property="og:url" content="https://geggenberger.github.io//jenkins-lab/index.html"/><meta property="og:description" content="## Installation based on Centos 7 minimal"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/jenkins-lab//img/puzzle-small.svg"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="/css/code-block-buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.js"></script><script type="text/javascript" src="/jenkins-lab/js/code-block-buttons.js"></script><link rel="stylesheet" href="/jenkins-lab/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/jenkins-lab/"><img class="logo" src="/jenkins-lab//img/puzzle-small.svg" alt="jenkins-lab"/><h2 class="headerTitleWithLogo">jenkins-lab</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>jenkins</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Intro</h3><ul><li class="navListItem"><a class="navItem" href="/jenkins-lab/docs/README.html">Intro</a></li></ul></div><div class="navGroup navGroupActive"><h3>jenkins</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/jenkins-lab/docs/install_jenkins.html">Install Jenkins</a></li></ul></div><div class="navGroup navGroupActive"><h3>docusaurus</h3><ul><li class="navListItem"><a class="navItem" href="/jenkins-lab/docs/docusaurus_install.html">Install Docusaurus</a></li></ul></div><div class="navGroup navGroupActive"><h3>node.js</h3><ul><li class="navListItem"><a class="navItem" href="/jenkins-lab/docs/nodeJS_install.html">Install NodeJS and Yarn</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Install Jenkins</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="installation-based-on-centos-7-minimal"></a><a href="#installation-based-on-centos-7-minimal" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation based on Centos 7 minimal</h2>
+<p>Export your current IP for further use:</p>
+<pre><code class="hljs">export IP=$(ip route get <span class="hljs-number">1</span> | sed -n 's/^.*src \([<span class="hljs-number">0</span><span class="hljs-number">-9.</span>]*\) .*$/\<span class="hljs-number">1</span>/p');
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="prepare-system-for-docker-installation"></a><a href="#prepare-system-for-docker-installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Prepare System for docker-installation</h3>
+<pre><code class="hljs">yum install yum-utils
+yum-config-manager --<span class="hljs-built_in">add</span>-repo http<span class="hljs-variable">s:</span>//download.docker.<span class="hljs-keyword">com</span>/linux/centos/docker-<span class="hljs-keyword">ce</span>.repo
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="install-and-enable-docker-community-edition"></a><a href="#install-and-enable-docker-community-edition" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install and enable docker (Community Edition)</h3>
+<pre><code class="hljs">yum install -y docker-ce<span class="hljs-selector-class">.x86_64</span> containerd<span class="hljs-selector-class">.io</span><span class="hljs-selector-class">.x86_64</span>
+systemctl enable docker
+systemctl start docker
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="create-a-user-to-work-with-docker"></a><a href="#create-a-user-to-work-with-docker" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>create a User to work with docker</h3>
+<pre><code class="hljs">useradd -u <span class="hljs-number">1100</span> -g <span class="hljs-keyword">cloud_user </span>-G wheel,docker <span class="hljs-keyword">cloud_user
+</span>su - <span class="hljs-keyword">cloud_user
+</span></code></pre>
+<h3><a class="anchor" aria-hidden="true" id="check-dockerversion-installed"></a><a href="#check-dockerversion-installed" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Check Dockerversion installed</h3>
+<pre><code class="hljs">docker <span class="hljs-comment">--version</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="create-and-setup-a-local-docker-registry"></a><a href="#create-and-setup-a-local-docker-registry" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create and Setup a local Docker-Registry</h3>
+<pre><code class="hljs">docker <span class="hljs-builtin-name">run</span> -d -p 5000:5000 <span class="hljs-attribute">--restart</span>=always --name registry registry:2
+</code></pre>
+<p>get the jenkins image</p>
+<pre><code class="hljs"><span class="hljs-symbol">docker</span> pull jenkinsci/<span class="hljs-keyword">blueocean
+</span></code></pre>
+<p>Tag the downloaded image:</p>
+<p>step by step:</p>
+<pre><code class="hljs"><span class="hljs-comment"># get the image id of your jenkins image:</span>
+docker images | awk 'NR==<span class="hljs-number">1</span> || /jenkins/ { print <span class="hljs-variable">$0</span> }'
+<span class="hljs-comment"># tag your image</span>
+docker <span class="hljs-keyword">tag</span> <span class="hljs-variable">&lt;IMAGE ID&gt;</span> <span class="hljs-variable">&lt;your ip&gt;</span>:<span class="hljs-number">5000</span>/jenkins
+</code></pre>
+<p>or with just a oneLiner:</p>
+<pre><code class="hljs"><span class="hljs-attribute">docker</span> images | awk -v ip=<span class="hljs-variable">${IP}</span> '/jenkins/ {system(<span class="hljs-string">"docker tag "</span> <span class="hljs-number">$3</span> <span class="hljs-string">" "</span> ip <span class="hljs-string">":5000/jenkins"</span>)}'
+</code></pre>
+<p>push the downloaded image to your local registry</p>
+<pre><code class="hljs"><span class="hljs-symbol">docker</span> <span class="hljs-keyword">push </span>${<span class="hljs-built_in">IP</span>}:<span class="hljs-number">5000</span>/jenkins
+</code></pre>
+<p>remove the original image downloaded from docker-hub</p>
+<pre><code class="hljs">docker <span class="hljs-built_in">image</span> <span class="hljs-built_in">remove</span> jenkinsci/blueocean
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="install-and-run-jenkins-as-a-docker-container"></a><a href="#install-and-run-jenkins-as-a-docker-container" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install and run Jenkins as a Docker-Container</h3>
+<pre><code class="hljs">docker <span class="hljs-keyword">run</span> -<span class="hljs-keyword">u</span> root --<span class="hljs-keyword">rm</span> -<span class="hljs-keyword">d</span> -p 8080:8080 -p 50000:50000 -v jenkins-data:/<span class="hljs-keyword">var</span>/jenkins_home -v /<span class="hljs-keyword">var</span>/<span class="hljs-keyword">run</span>/docker.sock:/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">run</span>/docker.sock --name jenkins <span class="hljs-variable">${IP}</span>:5000/jenkins 
+
+</code></pre>
+<p>Details: <a href="https://jenkins.io/doc/book/installing/">https://jenkins.io/doc/book/installing/</a></p>
+<p>Check the running Docker-Container:</p>
+<pre><code class="hljs">$ docker ps -a
+
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                                              NAMES
+f4eefeb0cfb9        <span class="hljs-number">192.168</span><span class="hljs-meta">.1</span><span class="hljs-meta">.210</span>:<span class="hljs-number">5000</span>/jenkins   <span class="hljs-string">"/sbin/tini -- /usr/…"</span>   <span class="hljs-number">4</span> seconds ago       <span class="hljs-meta">Up</span> <span class="hljs-number">3</span> seconds        <span class="hljs-number">0.0</span><span class="hljs-meta">.0</span><span class="hljs-meta">.0</span>:<span class="hljs-number">8080</span>-&gt;<span class="hljs-number">8080</span>/tcp, <span class="hljs-number">0.0</span><span class="hljs-meta">.0</span><span class="hljs-meta">.0</span>:<span class="hljs-number">50000</span>-&gt;<span class="hljs-number">50000</span>/tcp   jenkins
+f47db747577e        registry:<span class="hljs-number">2</span>                   <span class="hljs-string">"/entrypoint.sh /etc…"</span>   <span class="hljs-number">42</span> hours ago        <span class="hljs-meta">Up</span> <span class="hljs-number">2</span> hours          <span class="hljs-number">0.0</span><span class="hljs-meta">.0</span><span class="hljs-meta">.0</span>:<span class="hljs-number">5000</span>-&gt;<span class="hljs-number">5000</span>/tcp                             registry
+</code></pre>
+<p>access http://192.168.1.210:8080 &lt;&lt;-- This is needed to generate the initial password</p>
+<p>Login to the Jenkis Container and cat the initial admin Password</p>
+<pre><code class="hljs">eval $(docker container <span class="hljs-keyword">ls</span> | awk '/jenkins/ { <span class="hljs-keyword">print</span> <span class="hljs-string">"docker exec -it "</span> <span class="hljs-variable">$1</span> <span class="hljs-string">" /bin/bash"</span>}')
+<span class="hljs-keyword">cat</span> /<span class="hljs-keyword">var</span>/jenkins_home/secrets/initialAdminPassword
+</code></pre>
+<p>Go back to the Website and paste the password you've got</p>
+<p><img src="/jenkins-lab/docs/assets/jenkins_initial_pw.png" alt="initial Login Page" title="initial Login Page"></p>
+<p>Select &quot;install suggested plugins&quot; and finish installation
+<img src="/jenkins-lab/docs/assets/jenkins_select_plugins.png" alt="select plugins to install" title="select plugins to install"></p>
+<p>Then it will install the plugins:
+<img src="/jenkins-lab/docs/assets/jenkins_install_plugins.png" alt="install plugins" title="install plugins"></p>
+<p><img src="/jenkins-lab/docs/assets/jenkins_create_user.png" alt="create User" title="create user"></p>
+<pre><code class="hljs">docker images
+
+REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
+192.168.1.210:5000/jenkins      latest              a06b5a3526ea       <span class="hljs-number"> 5 </span>hours ago         553MB
+registry                       <span class="hljs-number"> 2 </span>                  f32a97de94e1       <span class="hljs-number"> 6 </span>months ago        25.8MB
+192.168.1.210:5000/docusaurus   latest              1fae97e07aab       <span class="hljs-number"> 17 </span>months ago       631MB
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="delete-existing-images"></a><a href="#delete-existing-images" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Delete existing Images</h3>
+<pre><code class="hljs"><span class="hljs-attribute">docker</span> rmi a06b5a3526ea
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="README.html">← Introduction</a><a class="docs-next button" href="docusaurus_install.html">Install Docusaurus →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation-based-on-centos-7-minimal">Installation based on Centos 7 minimal</a><ul class="toc-headings"><li><a href="#prepare-system-for-docker-installation">Prepare System for docker-installation</a></li><li><a href="#install-and-enable-docker-community-edition">Install and enable docker (Community Edition)</a></li><li><a href="#create-a-user-to-work-with-docker">create a User to work with docker</a></li><li><a href="#check-dockerversion-installed">Check Dockerversion installed</a></li><li><a href="#create-and-setup-a-local-docker-registry">Create and Setup a local Docker-Registry</a></li><li><a href="#install-and-run-jenkins-as-a-docker-container">Install and run Jenkins as a Docker-Container</a></li><li><a href="#delete-existing-images">Delete existing Images</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/jenkins-lab/" class="nav-home"><img src="/jenkins-lab//img/puzzle-small.svg" alt="jenkins-lab" width="66" height="58"/></a><div><h5>Docs</h5><a href="/jenkins-lab/docs/en/overview.html">Introduction</a></div><div><h5>Community</h5><a href="https://github.com/geggenberger/jenkins-lab">GitHub</a></div><div><h5>More</h5><a href="https://twitter.com/puzzleitc">Twitter</a><a href="https://github.com/puzzle/">Github</a><a href="https://www.puzzle.ch/">Puzzle ITC</a></div></section><section class="copyright">Copyright © 2019gerald eggenberger</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+              var search = docsearch({
+                
+                apiKey: 'faf7e73726dd47878df0ee8e1e0e5fbe',
+                indexName: 'jenkins-lab',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>
